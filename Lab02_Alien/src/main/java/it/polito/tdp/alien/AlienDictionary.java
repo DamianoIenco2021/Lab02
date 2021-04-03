@@ -3,10 +3,11 @@ package it.polito.tdp.alien;
 import java.util.*;
 
 public class AlienDictionary {
-	List<Word> dizionario;
+	//List<Word> dizionario;
+	List<WordEnhanced> dizionario;
 	
 	public AlienDictionary() {
-		dizionario= new ArrayList<Word>();
+		dizionario= new ArrayList<WordEnhanced>();
 	}
 	
 	public void resetDizionario() {
@@ -15,7 +16,8 @@ public class AlienDictionary {
 
 	public void addWord(String alienWord, String translation) {
 
-		Word parola= new Word(alienWord,translation);
+		//Word parola= new Word(alienWord,translation);
+		WordEnhanced parola= new WordEnhanced(alienWord,translation);
 		if(dizionario.contains(parola)) {
 			dizionario.get(dizionario.indexOf(parola)).setTranslation(translation);
 			return;
@@ -26,7 +28,7 @@ public class AlienDictionary {
 	}
 	
 	public String translateWord(String alienWord) {
-		Word w= new Word(alienWord);
+		WordEnhanced w= new WordEnhanced(alienWord);
 		
 		
 			 if(dizionario.contains(w)) {
@@ -38,7 +40,30 @@ public class AlienDictionary {
 	}
 
 	
+
+
+public String translateWordWildCard(String alienWildCard) {
+
+	// Utilizzo le regual expression di Java (posso usare stringa.matches())
+	// Sostituisco "?" con "."
+	// "." nelle regex indica un qualsiasi carattere
+	alienWildCard = alienWildCard.replaceAll("\\?", ".");
+
+	int matchCounter = 0;
+	StringBuilder sb = new StringBuilder();
+
+	for (WordEnhanced w : dizionario) {
+		if (w.compareWild(alienWildCard)) {
+			matchCounter++;
+			sb.append(w.getTranslation() + "\n");
+		}
+	}
 	
+	if (matchCounter != 0)
+		return sb.toString();
+	else
+		return null;
+}	
 	
 	
 }

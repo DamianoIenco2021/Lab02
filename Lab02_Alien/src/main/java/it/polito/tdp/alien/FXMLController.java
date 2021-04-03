@@ -1,7 +1,7 @@
 package it.polito.tdp.alien;
 
 import java.net.URL;
-import java.util.ArrayList;
+
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
@@ -56,7 +56,7 @@ public class FXMLController {
     	//Estraggo la prima parola
     	String alienWord=st.nextToken();
     	
-    	if(st.hasMoreElements()) {
+    	if(st.hasMoreTokens()) {
     		//devo inserire parola e traduzione nel dizionario
     		
     		//estraggo la seconda parola
@@ -80,14 +80,34 @@ public class FXMLController {
     			return;
     		}
     		
-    		String translation = alienDiz.translateWord(alienWord);
+    		//String translation = alienDiz.translateWord(alienWord);
+    		String translation;
     		
-    		if(translation!= null) {
+    		/*if(translation!= null) {
     			txtResult.setText(translation);
     		}else {
     			txtResult.setText("La parola cercata non esiste nel dizionario!");
     		}
-    	}
+    	}*/
+    		
+    		if (alienWord.matches("[a-zA-Z?]*") && !alienWord.matches("[a-zA-Z]*")) {
+
+				// Traduzione con WildCard
+				translation = alienDiz.translateWordWildCard(alienWord);
+
+			} else {
+
+				// Traduzione classica
+				translation = alienDiz.translateWord(alienWord);
+			}
+
+			if (translation != null) {
+				txtResult.setText(translation);
+			} else {
+				txtResult.setText("La parola cercata non esiste nel dizionario.");
+			}
+		}
+
 
     }
 
